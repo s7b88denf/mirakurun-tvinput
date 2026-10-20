@@ -6,10 +6,15 @@ import android.util.Log
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONArray
+import java.util.concurrent.TimeUnit
 
 class MirakurunApiClient(private val baseUrl: String) {
 
-    private val httpClient = OkHttpClient()
+    private val httpClient = OkHttpClient.Builder()
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(120, TimeUnit.SECONDS)
+        .callTimeout(180, TimeUnit.SECONDS)
+        .build()
 
     fun fetchServices(): List<MirakurunService> {
         val request = Request.Builder()
